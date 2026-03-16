@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project –Thera fireplaces</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script async src="https://www.instagram.com/embed.js"></script>
+  <style>
+    :root{
+      --red:#ee0606;
+      --white:#f2f2f2;
+      --black:#000;
+    }
+
+    /* Monument (local) */
+    @font-face{
+      font-family:"Monument";
+      src:url("fonts/MonumentExtended-Regular.otf") format("opentype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"Monument";
+      src:url("fonts/MonumentExtended-Ultrabold.otf") format("opentype");
+      font-weight:800;
+      font-style:normal;
+      font-display:swap;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{font-size:clamp(14px, 1.2vw, 18px)}
+    body{background:var(--black);color:var(--white);font-family:"Monument", Arial, sans-serif}
+
+    /* NAVBAR */
+    .navbar{
+      position:fixed; top:0; left:0; width:100%;
+      display:flex; justify-content:space-between; align-items:center;
+      padding:18px 18px; z-index:1000;
+      background:linear-gradient(to bottom, rgba(0,0,0,.8), transparent);
+    }
+    .logo img{height:64px;width:auto}
+    .menu{
+      width:28px;display:flex;flex-direction:column;gap:6px;cursor:pointer;
+    }
+    .menu span{height:2px;background:var(--white);width:100%;display:block}
+
+    /* MOBILE MENU (optional – ako već imaš na siteu, možeš ovo maknut) */
+    .mobile-menu{
+      position:fixed; inset:0; background:#000; z-index:2000;
+      display:flex; flex-direction:column; padding:24px; opacity:.95;
+      transform:translateX(100%); transition:.4s ease;
+    }
+    .mobile-menu.active{transform:translateX(0)}
+    .menu-top{display:flex;justify-content:flex-end}
+    .close{font-size:28px;cursor:pointer}
+    .menu-links{margin-top:60px;display:flex;flex-direction:column;gap:24px;font-size:22px}
+    .menu-links a{color:var(--red);text-decoration:none}
+    .menu-socials{margin-top:auto;display:flex;justify-content:center;gap:16px;padding-bottom:40px}
+    .menu-social{
+      width:44px;height:44px;border-radius:50%;background:var(--red);
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;text-decoration:none;font-size:18px;
+    }
+
+    /* BACK LINK */
+.back-home{
+  position:relative;
+  margin-top:90px; /* da bude ispod fixed navbar */
+  padding:0 18px;
+  z-index:50;
+}
+
+.back-home a{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+}
+
+.back-home .arrow{
+  color:var(--red);
+  font-size:18px;
+  font-weight:800;
+  transition:transform .1s ease;
+}
+
+.back-home .back-text{
+  color:var(--white);
+  font-size:14px;
+  letter-spacing:.5px;
+}
+
+.back-home a:hover .arrow{
+  transform:translateX(-4px);
+}
+
+    /* HERO */
+    .hero{
+      position:relative;
+      height:92vh;
+      min-height:640px;
+      overflow:hidden;
+    }
+    .hero-bg{
+      position:absolute; inset:0;
+      background:url("img/project-hero.jpg") center/cover no-repeat; /* <-- zamijeni */
+      transform:scale(1.02);
+    }
+    .hero-overlay{
+  position:absolute; inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(0,0,0,.65) 0%,   /* 👈 jače gore */
+    rgba(0,0,0,.55) 55%,
+    rgba(0,0,0,.85) 100%
+  );
+}
+
+    /* HANDLE + ICONS (FIX: čitljivost + pozicija) */
+    .hero-handle{
+  position:absolute;
+  top:100px;
+  left:18px;
+  right:18px;
+  z-index:20;
+}
+
+/* red sa tagom i ikonama */
+.handle-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+/* Graševina Croatica pill */
+.project-tag{
+  padding:8px 16px;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:30px;
+  background:rgba(255,255,255,.03);
+  font-weight:200;
+  font-size:14px;
+}
+
+/* socials */
+.project-socials{
+  display:flex;
+  gap:12px;
+}
+
+/* instagram crveni kvadrat */
+.project-icon.ig{
+  width:20px;
+  height:20px;
+  border-radius:4px;
+  background:var(--red);
+  color:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  text-decoration:none;
+}
+
+/* facebook minimalist */
+.project-icon{
+  color:#fff;
+  text-decoration:none;
+  font-size:16px;
+}
+
+/* lijevi dio teksta (naslov+opis+tag) */
+.hero-handle .tag{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  max-width:72%;            /* 👈 da ne ide pod ikone */
+}
+
+/* “glass” podloga samo iza teksta */
+.hero-handle .tag{
+  background:rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.08);
+  backdrop-filter: blur(8px);
+  border-radius:14px;
+  padding:12px 12px;
+}
+
+/* icons desno */
+.hero-handle .icons{
+  margin-left:auto;
+  display:flex;
+  gap:14px;
+  align-items:center;
+}
+
+/* SECTION TITLE */
+.section-title{
+  position:relative;
+  z-index:10;
+  padding:0 18px;
+  margin-top:140px;         /* 👈 da ne preklapa handle */
+  font-weight:800;
+  letter-spacing:1px;
+  font-size:clamp(28px, 6.5vw, 44px);
+}
+
+/* ABOUT text */
+.about-text{
+  padding:12px 18px 0;
+  max-width:520px;
+  opacity:.9;
+  line-height:1.5;
+  font-size:clamp(13px, 3.4vw, 16px);
+  position:relative;
+  z-index:10;
+}
+
+.ig-grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:16px;
+}
+
+@media(min-width:900px){
+  .ig-grid{
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.ig-embed{
+  border-radius:14px;
+  overflow:hidden;
+  background:#111;
+}
+
+.ig-embed iframe{
+  width:100% !important;
+  height:100% !important;
+}
+
+.see-more{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  margin-top:30px;
+  text-decoration:none;
+  color:#f2f2f2;
+  font-weight:800;
+}
+
+.see-more .arrow{
+  color:#ee0606;
+}
+
+
+/* IG FEED */
+.ig-feed{
+  padding:40px 18px;
+}
+
+.ig-list{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+/* 4:5 format (1080x1350) */
+.ig-card{
+  position:relative;
+  width:100%;
+  aspect-ratio:4/5;
+  border-radius:18px;
+  overflow:hidden;
+  display:block;
+}
+
+.ig-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .5s ease;
+}
+
+/* cinematic hover */
+.ig-card:hover img{
+  transform:scale(1.05);
+}
+
+/* subtle dark overlay */
+.ig-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.25), transparent);
+}
+
+/* pogledaj vise */
+.see-more{
+  margin-top:28px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  font-weight:800;
+  text-decoration:none;
+  color:var(--white);
+}
+
+.see-more span{
+  color:var(--red);
+  animation:bounce 1.2s infinite;
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(6px)}
+}
+
+/* mali IG badge */
+.post-ig{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:28px;
+  height:28px;
+  border-radius:8px;
+  background: var(--red);
+  color:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  opacity:.95;
+}
+
+/* desktop: 4 u redu */
+@media(min-width: 900px){
+  .posts-grid{ grid-template-columns: repeat(4, 1fr); }
+}
+
+/* POGLEDAJ VIŠE - centar dolje */
+.see-more{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  padding:26px 18px 0;
+  text-decoration:none;
+  color:var(--white);
+  font-weight:800;
+  letter-spacing:.5px;
+  opacity:.9;
+}
+
+.see-more .arrow{
+  color:var(--red);
+  font-size:1.2em;
+  animation: bounce 1.35s ease-in-out infinite;
+}
+
+@keyframes bounce{
+  0%,100%{ transform: translateY(0); }
+  50%{ transform: translateY(6px); }
+}
+
+    /* AFTERMOVIE SECTION */
+    .aftermovie{
+      position:relative;
+      padding:30px 0 10px;
+      background:transparent;
+    }
+    .aftermovie-title{
+      padding:0 18px;
+      font-weight:800;
+      font-size:2.2rem;
+      letter-spacing:1px;
+      margin-top:10px;
+    }
+    .aftermovie-title .slash{color:var(--red);margin-right:8px}
+    .aftermovie-card{
+      margin:18px 18px 0;
+      border-radius:18px;
+      overflow:hidden;
+      position:relative;
+      aspect-ratio: 16/9;
+      background:#111;
+      cursor:pointer;
+    }
+    .aftermovie-card img{
+      width:100%;height:100%;object-fit:cover;display:block;
+      filter:contrast(1.05) saturate(.95);
+      transform:scale(1.02);
+    }
+    .aftermovie-card .shade{
+      position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,.15));
+    }
+    .play-ring{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .play-btn{
+      width:86px;height:86px;border-radius:50%;
+      border:2px solid var(--red);
+      color:var(--red);
+      display:flex;align-items:center;justify-content:center;
+      font-size:26px;
+      background:rgba(0,0,0,.25);
+      backdrop-filter: blur(3px);
+      animation:breathe 2.4s ease-in-out infinite;
+    }
+    @keyframes breathe{
+      0%,100%{transform:scale(1); opacity:.85}
+      50%{transform:scale(1.14); opacity:1}
+    }
+
+    /* MODAL YOUTUBE */
+    .modal{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.92);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:3000;
+      padding:18px;
+    }
+    .modal.active{display:flex}
+    .modal-inner{
+      width:min(960px, 100%);
+      aspect-ratio:16/9;
+      border-radius:16px;
+      overflow:hidden;
+      position:relative;
+      background:#000;
+    }
+    .modal-inner iframe{width:100%;height:100%;border:0}
+    .modal-close{
+      position:absolute;
+      top:14px; right:14px;
+      width:40px;height:40px;border-radius:50%;
+      background:rgba(0,0,0,.45);
+      border:1px solid rgba(255,255,255,.25);
+      color:#fff;
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+      z-index:2;
+    }
+
+    /* PROJECT GALLERY (VAN HERO!) */
+    .project-gallery{
+      padding:34px 18px 10px;
+    }
+
+    .gallery-grid{
+      display:grid;
+      gap:14px;
+      grid-template-columns: repeat(2, 1fr); /* mobile-first */
+    }
+
+    @media (min-width:700px){
+      .gallery-grid{ grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (min-width:1100px){
+      .gallery-grid{ grid-template-columns: repeat(5, 1fr); }
+    }
+
+    .gallery-item{
+      overflow:hidden;
+      border-radius:12px;
+      cursor:pointer;
+      background:#111;
+      border:1px solid rgba(255,255,255,.06);
+    }
+    .gallery-item img{
+      width:100%;
+      aspect-ratio: 4 / 3;
+      object-fit:cover;
+      display:block;
+      transition: transform 0.6s ease;
+      transform:scale(1.02);
+    }
+    .gallery-item:hover img{
+      transform: scale(1.10) translateY(-3px);
+    }
+
+    /* FOOTER (kao na slici) */
+    .footer{
+      position:relative;
+      margin-top:30px;
+      overflow:hidden;
+      color:var(--white);
+    }
+    .footer-bg{
+      position:absolute; inset:0;
+      background:url("img/Hodnik1.png") center/cover no-repeat;
+      z-index:0;
+    }
+    .footer-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,.85) 25%,
+    rgba(0,0,0,.55) 50%,
+    rgba(0,0,0,0) 80%
+  );
+  z-index:1;
+}
+    .footer-inner{
+      position:relative; z-index:2;
+      padding:70px 18px 50px;
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+    }
+    .footer-left{
+      font-size:.9rem;
+      line-height:1.65;
+      max-width:240px;
+    }
+    .footer-title{
+      color:var(--red);
+      font-weight:800;
+      margin-bottom:6px;
+    }
+    .footer-right{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:12px;
+    }
+    .footer-logo{width:120px;height:auto;opacity:.95}
+    .footer-socials{display:flex;gap:10px}
+    .footer-social{
+      width:34px;height:34px;border-radius:50%;
+      background:var(--red);
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;text-decoration:none;font-size:15px;
+    }
+    .footer-bottom{
+      position:relative; z-index:2;
+      text-align:center;
+      font-size:.7rem;
+      opacity:.85;
+      padding:14px 10px 22px;
+    }
+
+    /* Small tweaks for very small phones */
+    @media (max-width:360px){
+      .section-title, .aftermovie-title{font-size:2rem}
+      .logo img{height:56px}
+      .filmstrip{height:155px}
+      .frame{width:100px;height:135px}
+    }
+
+    .section-title .slash{
+  color:#ee0606 !important;
+}
+@media (max-width: 700px){
+  .hero{
+    height:auto;
+    min-height: 0;
+    padding-bottom: 18px;   /* malo zraka prije galerije */
+  }
+}
+
+/* ================================= */
+/* DESKTOP VERSION 1200px+ */
+/* ================================= */
+
+@media (min-width:1200px){
+
+  /* NAVBAR */
+  .navbar{
+    padding:24px 140px;
+    background:rgba(0,0,0,.65);
+    backdrop-filter:blur(10px);
+  }
+
+  .logo img{
+    height:90px;
+  }
+
+  .menu{
+    display:none;
+  }
+
+  /* HERO */
+  .hero{
+  position:relative;
+  min-height:92vh;
+  height:auto;
+}
+
+  .hero-handle{
+    top:140px;
+    left:140px;
+    right:auto;
+  }
+
+  .project-tag{
+    font-size:16px;
+    padding:10px 22px;
+  }
+
+  /* NASLOV + TEKST */
+  .section-title{
+    padding:0 140px;
+    margin-top:220px;
+    font-size:56px;
+  }
+
+  .about-text{
+    padding:20px 140px 0;
+    max-width:800px;
+    font-size:18px;
+    line-height:1.7;
+  }
+
+  /* IG FEED */
+  .ig-feed{
+    padding:80px 140px;
+  }
+
+  .ig-list{
+    display:grid;
+    grid-template-columns:repeat(2, 520px);
+    justify-content:center;
+    gap:40px;
+  }
+
+  .ig-card{
+    border-radius:20px;
+  }
+
+  /* BACK LINK */
+  .back-home{
+    padding:0 140px;
+    margin-top:60px;
+  }
+
+  /* FOOTER */
+  .footer-inner{
+    padding:120px 140px 80px;
+  }
+
+}
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <div class="logo"><img src="img/logo_bijeli_redo.png" alt="Redo"></div>
+    <div class="menu" id="openMenu"><span></span><span></span><span></span></div>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="menu-top"><div class="close" id="closeMenu">×</div></div>
+    <div class="menu-links">
+      <a href="index.html">Početna</a>
+      <a href="about.html">O nama</a>
+      <a href="projects.html">Projekti</a>
+      <a href="contact.html">Kontakt</a>
+    </div>
+    <div class="menu-socials">
+      <a href="https://www.instagram.com/agencyredo/" class="menu-social">
+        <i class="fa-brands fa-instagram"></i>
+      </a>
+      <a href="https://www.behance.net/redoagency" class="menu-social">
+        <i class="fa-brands fa-behance"></i>
+      </a>
+    </div>
+    
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-handle">
+
+      <div class="handle-row">
+        <div class="project-tag">Thera fireplaces</div>
+    
+        <div class="project-socials">
+          <a href="https://www.instagram.com/thera_hrvatska/" class="project-icon ig">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="https://www.facebook.com/share/1APYwWvknB/" class="project-icon">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+        </div>
+      </div>
+    
+    </div>
+
+    <h2 class="section-title"><span class="slash">/</span>O suradnji</h2>
+    <p class="about-text">
+        Foto produkcija, vođenje društvenih mreža te razvoj vizualnog identiteta za dugoročan rast poslovanja.
+    </p>
+
+    <br>
+    <br>
+
+    
+    <section class="ig-feed">
+
+        <div class="ig-list">
+      
+         <a href="https://www.instagram.com/p/DRPztzFjP93/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" class="ig-card">
+                <img src="portfolio/img/thera2.jpeg" alt="">
+          </a>
+          <a href="https://www.instagram.com/p/DR9cAKIDDFa/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" class="ig-card">
+            <img src="portfolio/img/thera3.jpeg" alt="">
+          </a>
+      
+        </div>
+      
+        <a href="https://www.instagram.com/thera_hrvatska/" target="_blank" class="see-more">
+          Pogledaj više <span>↓</span>
+        </a>
+      
+      </section>
+
+  </section>
+
+   <!-- BACK TO HOME -->
+<div class="back-home">
+  <a href="index.html">
+    <span class="arrow">←</span>
+    <span class="back-text">POČETNA</span>
+  </a>
+</div>
+
+
+
+
+<footer class="footer">
+
+  <div class="footer-bg"></div>
+  <div class="footer-overlay"></div>
+
+  <div class="footer-inner">
+
+    <div class="footer-left">
+      <div class="footer-title">/CONTACT</div>
+      os.agency.redo@gmail.com<br>
+      +385 (0) 99 8459 320<br>
+      +385 (0) 92 376 2612
+
+      <br><br>
+
+      <div class="footer-title">/LOCATION</div>
+      Osijek, Croatia
+    </div>
+
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/agencyredo/" class="footer-social"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.behance.net/redoagency" class="footer-social"><i class="fa-brands fa-behance"></i></a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 Agency Redo. All Rights Reserved.
+  </div>
+
+</footer>
+
+
+  <script>
+    // Burger menu
+    const openBtn = document.getElementById("openMenu");
+    const closeBtn = document.getElementById("closeMenu");
+    const menu = document.getElementById("mobileMenu");
+    if(openBtn && closeBtn && menu){
+      openBtn.onclick = () => menu.classList.add("active");
+      closeBtn.onclick = () => menu.classList.remove("active");
+    }
+
+    
+
+  </script>
+
+</body>
+</html>

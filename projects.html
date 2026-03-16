@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redo Multimedia Agency</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="shortcut icon" href="img/Dizajn bez naslova (9).png" type="image/x-icon">
+
+  <style>
+
+html{
+  font-size: clamp(14px, 1.2vw, 18px);
+}
+
+    :root{
+  --red:#ee0606;
+  --white:#f2f2f2;
+  --black:#000;
+}
+
+/* LOCAL FONTS */
+@font-face{
+  font-family:"Monument";
+  src:url("fonts/MonumentExtended-Regular.otf") format("opentype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+
+@font-face{
+  font-family:"Monument";
+  src:url("fonts/MonumentExtended-Ultrabold.otf") format("opentype");
+  font-weight:800;
+  font-style:normal;
+  font-display:swap;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--black);color:var(--white);font-family:"Monument", Arial, sans-serif;}
+
+/* NAVBAR */
+.navbar{
+  position:fixed;
+  top:0;left:0;width:100%;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 18px;z-index:100;
+  background:linear-gradient(to bottom, rgba(0,0,0,.8), transparent);
+}
+
+.navbar{
+  transition: transform 0.35s ease, background 0.3s ease;
+}
+
+.navbar.hide{
+  transform: translateY(-100%);
+}
+
+.navbar.scrolled{
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(8px);
+}
+
+.logo img{
+  height: 98px;width:auto;
+  transition: transform 0.3s ease;
+}
+.logo img:hover {
+  transform: scale(1.05);
+}
+
+/* MENU */
+.menu{
+  width:28px;display:flex;flex-direction:column;gap:6px;cursor:pointer;
+}
+.menu span{height:2px;background:#f2f2f2;width:100%;display:block}
+
+/* MOBILE MENU */
+.mobile-menu{
+  position:fixed;inset:0;background:#000;z-index:200;
+  display:flex;flex-direction:column;padding:24px;opacity:.9;
+  transform:translateX(100%);transition:.4s ease;
+}
+.mobile-menu.active{transform:translateX(0)}
+
+.menu-top{display:flex;justify-content:flex-end}
+.close{
+  font-size:28px;
+  cursor:pointer;
+  transition: color 0.3s ease;
+}
+.close:hover { color: var(--red); }
+
+.menu-links {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;         /* isto kao prije */
+  font-size: 22px;    /* isto kao prije */
+}
+
+.menu-links a {
+  color: #ee0606;           /* crvena kao prije */
+  text-decoration: none;     /* uklanja underline */
+  display: block;            /* zauzima cijelu širinu */
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.menu-links a:hover {
+  color: var(--white);       /* hover efekt bijela boja */
+}
+
+.menu-socials{
+  margin-top:auto;            /*  gura ih na dno */
+  display:flex;
+  justify-content:center;
+  gap:16px;
+  padding-bottom:40px;
+}
+
+.menu-social{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  background:#ee0606;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:18px;
+  text-decoration:none;
+  transition: all 0.3s ease;
+}
+
+.menu-social:hover{
+  background:white;
+  color:#ee0606;
+  transform:scale(1.1);
+}
+
+
+
+.video-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to top,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,.85) 25%,
+    rgba(0,0,0,.55) 50%,
+    rgba(0,0,0,0) 80%
+  );
+  z-index:1;
+}
+
+
+/* HERO */
+.hero{height:100vh;width:100%;overflow:hidden;position:relative}
+
+.hero video{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  height:100vh;width:auto;min-width:100%;object-fit:cover;
+}
+
+.hero-content{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;z-index:2;width:90%;
+}
+
+.hero h1{font-size:35px;font-weight:800;letter-spacing:2px}
+.hero p{margin-top:6px;font-size:15px;font-weight:400;opacity:.9}
+
+/* SECTION TITLE */
+.section-title{font-weight:800;padding:0 20px;margin-bottom:20px}
+.section-title span{color:var(--red);margin-right:6px}
+
+/* PROJECTS */
+.projects{display:flex;flex-direction:column;gap:14px;padding:0 20px 60px}
+.card{
+  position:relative;width:100%;aspect-ratio:3/2.5;overflow:hidden;border-radius:10px;cursor:pointer;
+}
+.card img{
+  width:100%;height:100%;object-fit:cover;
+  transition: transform 0.4s ease;
+}
+.card:hover img{
+  transform: scale(1.05);
+}
+.card-text{
+  position:absolute;
+  bottom:18px;
+  left:20px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.card-year{
+  font-size:14px;
+  color:#ee0606;   /* 🔴 crvena */
+  opacity:1;       /* maknemo fade */
+  font-weight:500; /* malo jače */
+}
+
+.card-title{
+  font-size:19px;
+  font-weight:500;
+  transition: color 0.3s ease;
+}
+
+/* SERVICES */
+.services{padding:0 20px 80px;display:flex;gap:18px;align-items:flex-start}
+
+.services-image img{
+  width:120px;height:160px;object-fit:cover;border-radius:18px;
+  transition: transform 0.3s ease;
+}
+.services-image img:hover{
+  transform: scale(1.05);
+}
+
+.services-list{flex:1;display:flex;flex-direction:column;gap:18px;margin-top:6px}
+
+.service-row{
+  display:flex;justify-content:space-between;align-items:center;
+  cursor: pointer;
+}
+.service-row:hover .service-name{
+  color: var(--red);
+  transition: color 0.3s ease;
+}
+
+.service-name{font-size:13px;font-weight:500}
+.service-number{font-size:12px;opacity:.7}
+
+.service-item{display:flex;align-items:center;justify-content:space-between;gap:14px}
+
+.service-left{display:flex;align-items:center;gap:14px}
+.service-left img{
+  width:54px;height:54px;object-fit:cover;border-radius:6px;
+  transition: transform 0.3s ease;
+}
+.service-left img:hover{
+  transform: scale(1.1);
+}
+
+.service-text{font-size:14px;line-height:1.2}
+.service-number{font-size:12px;opacity:.6}
+
+/* MAP */
+.map{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+}
+.map iframe{
+  width:400px;
+  height:320px;
+  border:0;
+  border-radius:20px;
+  margin-top:16px;
+}
+
+.card-link{
+  text-decoration:none;
+  color:inherit;
+  display:block;
+}
+
+/* ABOUT SECTION */
+.about-section{
+  padding: 80px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.about-container{
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  gap: 40px;
+  align-items: center;
+}
+
+.about-image{
+  flex: 1 1 400px;
+  display: flex;
+  justify-content: center;
+  animation: float 4s ease-in-out infinite;
+}
+
+.about-image img{
+  width: 100%;
+  max-width: 500px;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 10px 40px rgba(238,6,6,0.3);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.about-text{
+  flex: 1 1 400px;
+  color: var(--white);
+  line-height: 1.6;
+}
+
+.about-text h2{
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.about-text h2 span{
+  color: var(--red);
+  margin-right: 6px;
+}
+
+.about-text p{
+  font-size: 18px;
+  margin-bottom: 16px;
+  opacity: 0.9;
+}
+
+/* FOOTER */
+.footer{
+  position:relative;
+  color:#f2f2f2;
+  overflow:hidden;
+}
+
+/* pozadinska slika */
+.footer-bg{
+  position:absolute;
+  inset:0;
+  background:url("img/Hodnik1.png") center/cover no-repeat;
+  z-index:0;
+}
+
+/* tamni fade prema vrhu (subtilniji) */
+.footer-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,.85) 25%,
+    rgba(0,0,0,.55) 50%,
+    rgba(0,0,0,0) 80%
+  );
+  z-index:1;
+}
+
+.footer-inner{
+  position:relative;
+  z-index:2;
+  padding:90px 24px 40px;
+  display:flex;
+  flex-direction:column;        
+  gap:40px;
+}
+
+/* LEFT SIDE */
+.footer-left{
+  font-size:14px;
+  line-height:1.7;
+}
+
+.footer-title{
+  color:#ee0606;
+  font-weight:800;
+  margin-bottom:6px;
+  letter-spacing:.5px;
+}
+
+/* RIGHT SIDE */
+.footer-right{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:18px;
+}
+
+.footer-logo{
+  width:120px;
+  height:auto;
+}
+
+/* SOCIALS */
+.footer-socials{
+  display:flex;
+  gap:12px;
+}
+
+.footer-social{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:#ee0606;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:16px;
+  text-decoration:none;
+  transition: all 0.3s ease;
+}
+
+.footer-social:hover{
+  background: var(--white);
+  color: var(--red);
+  transform: scale(1.1);
+}
+
+/* COPYRIGHT */
+.footer-bottom{
+  position:relative;
+  z-index:2;
+  text-align:center;
+  font-size:11px;
+  padding:18px 10px 26px;
+  opacity:.85;
+}
+
+/* ================================= */
+/* DESKTOP VERSION – PROJECTS PAGE */
+/* ================================= */
+
+@media (min-width:1200px){
+
+  /* NAVBAR */
+  .navbar{
+    padding:24px 140px;
+    background:rgba(0,0,0,.65);
+    backdrop-filter:blur(10px);
+  }
+
+  .logo img{
+    height:110px;
+  }
+
+  .menu{
+    display:flex;
+  }
+
+  /* HERO */
+  .hero h1{
+    font-size:72px;
+    letter-spacing:4px;
+  }
+
+  .hero p{
+    font-size:20px;
+  }
+
+  /* PROJECTS GRID - 2 u redu */
+  .projects{
+    display:grid;
+    grid-template-columns: repeat(2, 520px);
+    justify-content:center;
+    gap:50px;
+    padding:100px 0 140px;
+  }
+
+  .card{
+    aspect-ratio:16/11;
+    border-radius:18px;
+  }
+
+  .card-title{
+    font-size:22px;
+  }
+
+  .card-year{
+    font-size:15px;
+  }
+
+  .card-text{
+    bottom:24px;
+    left:26px;
+  }
+
+  /* FOOTER */
+  .footer-inner{
+    padding:120px 140px 80px;
+    flex-direction:row;
+    justify-content:space-between;
+  }
+
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <div class="logo"><img src="img/logo_bijeli_redo.png" alt="Redo"></div>
+    <div class="menu" id="openMenu"><span></span><span></span><span></span></div>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="menu-top"><div class="close" id="closeMenu">×</div></div>
+    <div class="menu-links">
+      <a href="index.html">Početna</a>
+      <a href="about.html">O nama</a>
+      <a href="projects.html">Projekti</a>
+      <a href="contact.html">Kontakt</a>
+    </div>
+    <div class="menu-socials">
+      <a href="https://www.instagram.com/agencyredo/" class="menu-social">
+        <i class="fa-brands fa-instagram"></i>
+      </a>
+      <a href="https://www.behance.net/redoagency" class="menu-social">
+        <i class="fa-brands fa-behance"></i>
+      </a>
+    </div>
+    
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="video-overlay"></div>
+    <video autoplay muted loop playsinline src="video/horizontala.mp4"></video>
+    <div class="hero-content">
+      <h1 class="section-title"><span>/</span>PROJEKTI</h1>
+      <p>Neki od istaknutijih projekata</p>
+    </div>
+  </section>
+  
+
+  <section class="projects">
+
+    <a href="enprimeur.html" class="card-link">
+      <div class="card">
+        <img src="img/enprimeur.png">
+        <div class="card-text">
+          <div class="card-year">2026</div>
+          <div class="card-title">En Primeur</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="wineos.html" class="card-link">
+      <div class="card">
+        <img src="img/wineos.png">
+        <div class="card-text">
+          <div class="card-year">2026</div>
+          <div class="card-title">WineOS</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="postolarvarga.html" class="card-link">
+      <div class="card">
+        <img src="img/postolarvarga.png">
+        <div class="card-text">
+          <div class="card-year">2025</div>
+          <div class="card-title">Postolar Varga</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="lamedussa.html" class="card-link">
+      <div class="card">
+        <img src="img/la medussa.png">
+        <div class="card-text">
+          <div class="card-year">2025</div>
+          <div class="card-title">La Medussa</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="pivnicabroko.html" class="card-link">
+      <div class="card">
+        <img src="img/pivnicabroko.png">
+        <div class="card-text">
+          <div class="card-year">2025</div>
+          <div class="card-title">Pivnica Broko</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="futurra.html" class="card-link">
+      <div class="card">
+        <img src="img/FUTURRA.png">
+        <div class="card-text">
+          <div class="card-year">2025</div>
+          <div class="card-title">Promo video FUTURRA</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="soba23.html" class="card-link">
+      <div class="card">
+        <img src="img/Soba23.png">
+        <div class="card-text">
+          <div class="card-year">2025</div>
+          <div class="card-title">Soba 23 street food</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="thera.html" class="card-link">
+      <div class="card">
+        <img src="img/Thera.png">
+        <div class="card-text">
+          <div class="card-year">2025</div>
+          <div class="card-title">Thera fireplaces</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="dubioza.html" class="card-link">
+      <div class="card">
+        <img src="img/Dubioza.png">
+        <div class="card-text">
+          <div class="card-year">2024</div>
+          <div class="card-title">Dubioza rent-a-bar</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="omegaconceptbar.html" class="card-link">
+      <div class="card">
+        <img src="img/Omega.png">
+        <div class="card-text">
+          <div class="card-year">2025</div>
+          <div class="card-title">Omega Concept Bar</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="boom.html" class="card-link">
+      <div class="card">
+        <img src="img/Boom.png">
+        <div class="card-text">
+          <div class="card-year">2025</div>
+          <div class="card-title">Boom burgers & bbq</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="ringroom.html" class="card-link">
+      <div class="card">
+        <img src="img/RingRoom.png">
+        <div class="card-text">
+          <div class="card-year">2025</div>
+          <div class="card-title">Ring Room</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="liros.html" class="card-link">
+      <div class="card">
+        <img src="img/Liros.png">
+        <div class="card-text">
+          <div class="card-year">2025</div>
+          <div class="card-title">Liros rent-a-boat</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="kameleonsecurity.html" class="card-link">
+      <div class="card">
+        <img src="img/Kameleon.png">
+        <div class="card-text">
+          <div class="card-year">2025</div>
+          <div class="card-title">Kameleon Security</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="koncertprodukcija.html" class="card-link">
+      <div class="card">
+        <img src="img/Koncert.png">
+        <div class="card-text">
+          <div class="card-year">2025</div>
+          <div class="card-title">Koncert produkcija</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="mixauto.html" class="card-link">
+      <div class="card">
+        <img src="img/MixAuto.png">
+        <div class="card-text">
+          <div class="card-year">2025</div>
+          <div class="card-title">Mix auto</div>
+        </div>
+      </div>
+    </a>
+    
+    <a href="vinumacademicum.html" class="card-link">
+      <div class="card">
+        <img src="img/VinumAcademicum.png">
+        <div class="card-text">
+          <div class="card-year">2025</div>
+          <div class="card-title">Vinum Academicum</div>
+        </div>
+      </div>
+    </a>
+    
+    </section>
+  
+
+  <footer class="footer">
+
+    <div class="footer-bg"></div>
+    <div class="footer-overlay"></div>
+  
+    <div class="footer-inner">
+  
+      <div class="footer-left">
+        <div class="footer-title">/CONTACT</div>
+        os.agency.redo@gmail.com<br>
+        +385 (0) 99 8459 320<br>
+        +385 (0) 92 376 2612
+  
+        <br><br>
+  
+        <div class="footer-title">/LOCATION</div>
+        Osijek, Croatia
+      </div>
+
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/agencyredo/" class="footer-social"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.behance.net/redoagency" class="footer-social"><i class="fa-brands fa-behance"></i></a>
+      </div>
+      </div>
+  
+    </div>
+  
+    <div class="footer-bottom">
+      © 2026 Agency Redo. All Rights Reserved.
+    </div>
+  
+  </footer>
+  
+
+  <script>
+    const openBtn = document.getElementById("openMenu");
+    const closeBtn = document.getElementById("closeMenu");
+    const menu = document.getElementById("mobileMenu");
+
+    openBtn.onclick = () => menu.classList.add("active");
+    closeBtn.onclick = () => menu.classList.remove("active");
+
+    document.addEventListener("DOMContentLoaded", function(){
+
+let lastScroll = 0;
+const navbar = document.querySelector(".navbar");
+
+window.addEventListener("scroll", function(){
+  const currentScroll = window.pageYOffset;
+
+  if(!navbar) return;
+
+  if(currentScroll > lastScroll && currentScroll > 80){
+    navbar.classList.add("hide");
+  } else {
+    navbar.classList.remove("hide");
+  }
+
+  lastScroll = currentScroll;
+});
+
+});
+  </script>
+
+</body>
+</html>
